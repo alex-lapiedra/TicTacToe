@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TicTacToe</string>
+    <string name="Computer_ON">Computer ON</string>
+    <string name="Computer_OFF">Computer OFF</string>
+</resources>
