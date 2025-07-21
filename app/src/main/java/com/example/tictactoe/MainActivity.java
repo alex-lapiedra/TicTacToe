@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private final int BUTTON_COUNT = 9;
+
     private final MyArray [] wc = {
             new MyArray(), new MyArray(), new MyArray(),
             new MyArray(), new MyArray(), new MyArray(),
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final MyArray opponentPos = new MyArray();
     private boolean isComputerOn = true;
     private boolean isOpponentTurn = false;
-
     private Button resetButton;
     private SwitchMaterial computerSwitch;
     private TextView computerText;
@@ -41,11 +42,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final ArrayList<Button> buttons = new ArrayList<>();
 
     public void onClick(View clickedButton) {
+        setButtonsEnabled(false);
         if (clickedButton == resetButton) {
             resetGame();
             return;
         }
-
         if (clickedButton == computerSwitch) {
             if (computerSwitch.isChecked()) {
                 computerText.setText(R.string.Computer_ON);
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         
         int buttonIndex = 0;
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < BUTTON_COUNT; i++) {
             if (clickedButton == buttons.get(i)) {
                 buttonIndex = i;
                 break;
@@ -84,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 executeComputerMove();
-                checkWinner(opponentPos);
                 if (checkWinner(opponentPos)) {
                     showAlert(" ¡ Has perdido, LOSER ! ");
                 }
+                setButtonsEnabled(true);
             }, 700);
         } else {
             if (isOpponentTurn) {
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showAlert("No hay movimientos disponibles");
             }
             isOpponentTurn = !isOpponentTurn;
+            setButtonsEnabled(true);
         }
     }
 
@@ -147,9 +149,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private int getFreePosition() {
         Random random = new Random();
-        int freePosition = random.nextInt(9);
+        int freePosition = random.nextInt(BUTTON_COUNT);
         while(playerPos.hasNumber(freePosition) || opponentPos.hasNumber(freePosition)) {
-            freePosition = random.nextInt(9);
+            freePosition = random.nextInt(BUTTON_COUNT);
         }
         return freePosition;
     }
@@ -166,44 +168,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void resetGame() {
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < BUTTON_COUNT; i++) {
             buttons.get(i).setText("");
         }
         playerPos.clear();
         opponentPos.clear();
         isOpponentTurn = false;
+        setButtonsEnabled(true);
+    }
+
+    private void setButtonsEnabled(boolean isEnabled) {
+        for (int i = 0; i < BUTTON_COUNT; i++) {
+            buttons.get(i).setEnabled(isEnabled);
+        }
     }
 
     private boolean haveFreePositions() {
-        return playerPos.count + opponentPos.count < 9;
+        return playerPos.count + opponentPos.count < BUTTON_COUNT;
     }
 
     private void prepareViews() {
         resetButton = findViewById(R.id.resetButton);
         resetButton.setOnClickListener(this);
         computerSwitch = findViewById(R.id.computerSwitch);
-        computerText = findViewById(R.id.computerTextView);
         computerSwitch.setOnClickListener(this);
-        Button button_0 = findViewById(R.id.button_0);
-        Button button_1 = findViewById(R.id.button_1);
-        Button button_2 = findViewById(R.id.button_2);
-        Button button_3 = findViewById(R.id.button_3);
-        Button button_4 = findViewById(R.id.button_4);
-        Button button_5 = findViewById(R.id.button_5);
-        Button button_6 = findViewById(R.id.button_6);
-        Button button_7 = findViewById(R.id.button_7);
-        Button button_8 = findViewById(R.id.button_8);
-        buttons.add(button_0);
-        buttons.add(button_1);
-        buttons.add(button_2);
-        buttons.add(button_3);
-        buttons.add(button_4);
-        buttons.add(button_5);
-        buttons.add(button_6);
-        buttons.add(button_7);
-        buttons.add(button_8);
+        computerText = findViewById(R.id.computerTextView);
+
+        int[] buttonsId = {
+            R.id.button_0,
+            R.id.button_1,
+            R.id.button_2,
+            R.id.button_3,
+            R.id.button_4,
+            R.id.button_5,
+            R.id.button_6,
+            R.id.button_7,
+            R.id.button_8
+        };
+
+        for(int i = 0; i < BUTTON_COUNT; i++) {
+            buttons.add(findViewById(buttonsId[i]));
+        }
+
         buttons.add(resetButton);
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < BUTTON_COUNT; i++) {
             buttons.get(i).setOnClickListener(this);
             buttons.get(i).setTextSize(40);
             buttons.get(i).setBackgroundColor(getColor(R.color.green));
