@@ -22,12 +22,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private final int BUTTON_COUNT = 9;
+    private final int BUTTON_COUNT = 16;
 
     private final MyArray [] wc = {
             new MyArray(), new MyArray(), new MyArray(),
             new MyArray(), new MyArray(), new MyArray(),
-            new MyArray(), new MyArray()
+            new MyArray(), new MyArray(), new MyArray(),
+            new MyArray()
     };
 
     private final MyArray playerPos = new MyArray();
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void executeComputerMove() {
         //If AI can win, then win
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
             MyArray res = wc[i].substract(opponentPos);
             int move = res.itemAt(0);
             if ( res.count == 1 && !playerPos.hasNumber(move) && !opponentPos.hasNumber(move)) {
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         //If AI can block, then block
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
             MyArray res = wc[i].substract(playerPos);
             int move = res.itemAt(0);
             if ( res.count == 1 && !opponentPos.hasNumber(move)) {
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean checkWinner(MyArray positions) {
         boolean winRes = false;
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
            if (wc[i].isSubset(positions)) {
                winRes = true;
                break;
@@ -203,8 +204,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             R.id.button_5,
             R.id.button_6,
             R.id.button_7,
-            R.id.button_8
+            R.id.button_8,
+                R.id.button_9,
+                R.id.button_10,
+                R.id.button_11,
+                R.id.button_12,
+                R.id.button_13,
+                R.id.button_14,
+                R.id.button_15
+
         };
+
+
+
+
 
         for(int i = 0; i < BUTTON_COUNT; i++) {
             buttons.add(findViewById(buttonsId[i]));
@@ -237,27 +250,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         wc[0].addNumber(0);
         wc[0].addNumber(1);
         wc[0].addNumber(2);
-        wc[1].addNumber(3);
+        wc[0].addNumber(3);
         wc[1].addNumber(4);
         wc[1].addNumber(5);
-        wc[2].addNumber(6);
-        wc[2].addNumber(7);
+        wc[1].addNumber(6);
+        wc[1].addNumber(7);
         wc[2].addNumber(8);
-        wc[3].addNumber(0);
-        wc[3].addNumber(3);
-        wc[3].addNumber(6);
-        wc[4].addNumber(1);
+        wc[2].addNumber(9);
+        wc[2].addNumber(10);
+        wc[2].addNumber(11);
+        wc[3].addNumber(12);
+        wc[3].addNumber(13);
+        wc[3].addNumber(14);
+        wc[3].addNumber(15);
+        wc[4].addNumber(0);
         wc[4].addNumber(4);
-        wc[4].addNumber(7);
-        wc[5].addNumber(2);
+        wc[4].addNumber(8);
+        wc[4].addNumber(12);
+        wc[5].addNumber(1);
         wc[5].addNumber(5);
-        wc[5].addNumber(8);
-        wc[6].addNumber(0);
-        wc[6].addNumber(4);
-        wc[6].addNumber(8);
-        wc[7].addNumber(2);
-        wc[7].addNumber(4);
-        wc[7].addNumber(6);
+        wc[5].addNumber(9);
+        wc[5].addNumber(13);
+        wc[6].addNumber(2);
+        wc[6].addNumber(6);
+        wc[6].addNumber(10);
+        wc[6].addNumber(14);
+        wc[7].addNumber(3);
+        wc[7].addNumber(7);
+        wc[7].addNumber(11);
+        wc[7].addNumber(15);
+        wc[8].addNumber(0);
+        wc[8].addNumber(5);
+        wc[8].addNumber(10);
+        wc[8].addNumber(15);
+        wc[9].addNumber(3);
+        wc[9].addNumber(6);
+        wc[9].addNumber(9);
+        wc[9].addNumber(12);
+
     }
 
     private void showAlert(String message) {
